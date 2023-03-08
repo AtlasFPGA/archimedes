@@ -132,7 +132,10 @@ architecture RTL of de10lite_top is
 			q		:	 OUT STD_LOGIC
 		);
 	END COMPONENT;
+	
 	signal act_led : std_logic;
+	
+	alias clock_target 		: std_logic is MAX10_CLK1_50;
 
 begin
 
@@ -188,8 +191,8 @@ VGA_VS<=vga_vsync;
 guest: COMPONENT archimedes_mist_top
 	PORT map
 	(
-		CLOCK_27 => MAX10_CLK2_50&MAX10_CLK2_50, -- Comment out one of these lines to match the guest core.
---		CLOCK_27 => MAX10_CLK2_50,
+		CLOCK_27 => clock_target&clock_target, -- Comment out one of these lines to match the guest core.
+--		CLOCK_27 => clock_target,
 --		RESET_N => reset_n,
 		-- clocks
 		DRAM_DQ => DRAM_DQ,
