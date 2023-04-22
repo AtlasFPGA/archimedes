@@ -37,7 +37,11 @@ module archimedes_mist_top(
 	// AUDIO
 	output        AUDIO_L, // sigma-delta DAC output left
 	output        AUDIO_R, // sigma-delta DAC output right
-	
+	`ifdef DEMISTIFY
+	output [15:0] DAC_L,
+	output [15:0] DAC_R,
+	`endif
+
 	// SDRAM
 	output [12:0] DRAM_A,
 	output  [1:0] DRAM_BA,
@@ -624,6 +628,11 @@ audio	AUDIO	(
 	.audio_l        ( AUDIO_L        ),
 	.audio_r        ( AUDIO_R        )
 );
+
+`ifdef DEMISTIFY
+assign DAC_L = coreaud_l;
+assign DAC_R = coreaud_r;
+`endif
 
 always @(posedge clk_sys) begin 
 	reg loader_active_old;

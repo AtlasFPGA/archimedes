@@ -3,6 +3,7 @@
 
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 package demistify_config_pkg is
 constant demistify_romspace : integer := 15; -- 32k address space to accommodate 8k + 8K of ROM
@@ -61,8 +62,10 @@ component archimedes_mist_top
 		VGA_B		:	 OUT STD_LOGIC_VECTOR(5 DOWNTO 0);
 --		UART_TX	:	OUT STD_LOGIC;
 --		UART_RX	:	IN STD_LOGIC := '1';
-		AUDIO_L  : out std_logic;
-		AUDIO_R  : out std_logic
+		AUDIO_L  	: out std_logic;
+		AUDIO_R  	: out std_logic;
+		DAC_L       : out signed(15 downto 0);
+		DAC_R       : out signed(15 downto 0)
 --		PS2K_CLK : in std_logic;
 --		PS2K_DAT : in std_logic;
 --		PS2M_CLK : in std_logic;

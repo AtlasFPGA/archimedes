@@ -169,10 +169,6 @@ architecture RTL of deca_top is
 	-- DAC AUDIO     
 	signal dac_l : signed(15 downto 0);
 	signal dac_r : signed(15 downto 0);
-    --signal dac_midi_l : signed(15 downto 0);
-	--signal dac_midi_r : signed(15 downto 0);
-	--signal dac_l: std_logic_vector(15 downto 0);
-	--signal dac_r: std_logic_vector(15 downto 0);
 	--signal dac_l_s: signed(15 downto 0);
 	--signal dac_r_s: signed(15 downto 0);
 
@@ -471,10 +467,12 @@ begin
 		VGA_R => vga_red(7 downto 2),
 		VGA_G => vga_green(7 downto 2),
 		VGA_B => vga_blue(7 downto 2),
+
 		AUDIO_L => sigma_l,
-		AUDIO_R => sigma_r
---		DAC_L   => dac_l,
---		DAC_R   => dac_r
+		AUDIO_R => sigma_r,
+		DAC_L   => dac_l,
+		DAC_R   => dac_r
+
 --		PS2K_CLK => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
 --		PS2K_DAT => ps2_keyboard_dat_in,
 --		PS2M_CLK => ps2_mouse_clk_in,
