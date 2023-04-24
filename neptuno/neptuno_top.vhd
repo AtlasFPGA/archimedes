@@ -139,12 +139,10 @@ architecture RTL of neptuno_top is
 	end component;
 
 	-- DAC AUDIO     
-	signal dac_l : signed(15 downto 0);
-	signal dac_r : signed(15 downto 0);
-	--signal dac_l: std_logic_vector(9 downto 0);
-	--signal dac_r: std_logic_vector(9 downto 0);
-	--signal dac_l_s: std_logic_vector(15 downto 0);
-	--signal dac_r_s: std_logic_vector(15 downto 0);
+	signal dac_l : std_logic_vector(15 downto 0);
+	signal dac_r : std_logic_vector(15 downto 0);
+	signal dac_l_s: std_logic_vector(15 downto 0);
+	signal dac_r_s: std_logic_vector(15 downto 0);
 
 
 	component joydecoder is
@@ -243,14 +241,14 @@ begin
 			dac_LRCK  => I2S_LRCLK,
 			dac_SCLK  => I2S_BCLK,
 			dac_SDIN  => I2S_DATA,
-			L_data    => std_logic_vector(dac_l),
-			R_data    => std_logic_vector(dac_r)
-		--	L_data    => std_logic_vector(dac_l_s),
-		--	R_data    => std_logic_vector(dac_r_s)
-		);
+		--	L_data    => std_logic_vector(dac_l),
+		--	R_data    => std_logic_vector(dac_r)
+		L_data    => dac_l_s,
+		R_data    => dac_r_s
+	);
 
-	--dac_l_s <= ('0' & dac_l & "00000");
-	--dac_r_s <= ('0' & dac_r & "00000");
+	dac_l_s <= '0' & dac_l(14 downto 0);
+	dac_r_s <= '0' & dac_r(14 downto 0);
 
 
 	-- JOYSTICKS
@@ -311,9 +309,10 @@ begin
 		VGA_G => vga_green(7 downto 2),
 		VGA_B => vga_blue(7 downto 2),
 		AUDIO_L => sigma_l,
-		AUDIO_R => sigma_r
---		DAC_L   => dac_l,
---		DAC_R   => dac_r
+		AUDIO_R => sigma_r,
+		DAC_L   => dac_l,
+		DAC_R   => dac_r
+		
 --		PS2K_CLK => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
 --		PS2K_DAT => ps2_keyboard_dat_in,
 --		PS2M_CLK => ps2_mouse_clk_in,

@@ -373,7 +373,9 @@ begin
 		locked		=> locked
 	);
 
-	clock_target <= CLK50M;
+	--clock_target <= CLK50M;
+	clock_target <= CLK12M;
+
 
 	-- BEGIN HDMI ATLAS -------------------   
 	PINS_HDMI_VGA_2 : if ATLAS_CYC_VGA = 0 generate -- HDMI TDMS
