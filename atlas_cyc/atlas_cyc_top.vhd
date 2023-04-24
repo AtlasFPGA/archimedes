@@ -127,26 +127,24 @@ architecture RTL of atlas_top is
 	signal joyd : std_logic_vector(7 downto 0);
 
 
-	-- -- I2S audio
-	-- component audio_top is
-	-- Port ( 	
-	-- 		clk_50MHz : in STD_LOGIC; -- system clock
-	-- 		dac_MCLK : out STD_LOGIC; -- outputs to PMODI2L DAC
-	-- 		dac_LRCK : out STD_LOGIC;
-	-- 		dac_SCLK : out STD_LOGIC;
-	-- 		dac_SDIN : out STD_LOGIC;
-	-- 		L_data : 	in std_logic_vector(15 downto 0);  	-- LEFT data (16-bit signed)
-	-- 		R_data : 	in std_logic_vector(15 downto 0)  	-- RIGHT data (16-bit signed) 
-	-- );
-	-- end component;	
+	-- I2S audio
+	component audio_top is
+	Port ( 	
+			clk_50MHz : in STD_LOGIC; -- system clock
+			dac_MCLK : out STD_LOGIC; -- outputs to PMODI2L DAC
+			dac_LRCK : out STD_LOGIC;
+			dac_SCLK : out STD_LOGIC;
+			dac_SDIN : out STD_LOGIC;
+			L_data : 	in std_logic_vector(15 downto 0);  	-- LEFT data (16-bit signed)
+			R_data : 	in std_logic_vector(15 downto 0)  	-- RIGHT data (16-bit signed) 
+	);
+	end component;	
 
 	-- DAC AUDIO     
-	--signal dac_l : signed(15 downto 0);
-	--signal dac_r : signed(15 downto 0);
-	signal dac_l: std_logic_vector(15 downto 0);
-	signal dac_r: std_logic_vector(15 downto 0);
-	--signal dac_l_s: signed(15 downto 0);
-	--signal dac_r_s: signed(15 downto 0);
+	signal dac_l : std_logic_vector(15 downto 0);
+	signal dac_r : std_logic_vector(15 downto 0);
+	signal dac_l_s: std_logic_vector(15 downto 0);
+	signal dac_r_s: std_logic_vector(15 downto 0);
 
 	-- I2S 
 	signal i2s_mclk : std_logic;
@@ -325,17 +323,22 @@ begin
 	joyc <= (others => '1');
 	joyd <= (others => '1');
 
-	-- -- I2S audio
-	-- audio_i2s: audio_top
-	-- port map(
-	-- 	clk_50MHz => CLK50M,
-	-- 	dac_MCLK  => I2S_MCLK,
-	-- 	dac_LRCK  => PI_MOSI_I2S_LRCLK,
-	-- 	dac_SCLK  => PI_MISO_I2S_BCLK,
-	-- 	dac_SDIN  => PI_CLK_I2S_DATA,
-	-- 	L_data    => std_logic_vector(dac_l),
-	-- 	R_data    => std_logic_vector(dac_r)
-	-- );		
+	-- I2S audio
+	audio_i2s: audio_top
+	port map(
+		clk_50MHz => CLK50M,
+		dac_MCLK  => I2S_MCLK,
+		dac_LRCK  => PI_MOSI_I2S_LRCLK,
+		dac_SCLK  => PI_MISO_I2S_BCLK,
+		dac_SDIN  => PI_CLK_I2S_DATA,
+		--	L_data    => std_logic_vector(dac_l),
+		--	R_data    => std_logic_vector(dac_r)
+		L_data    => dac_l_s,
+		R_data    => dac_r_s
+	);
+
+	dac_l_s <= '0' & dac_l(14 downto 0);
+	dac_r_s <= '0' & dac_r(14 downto 0);
 
 
 	-- BEGIN VGA ATLAS -------------------  
@@ -546,9 +549,9 @@ begin
 		VGA_G => vga_green(7 downto 2),
 		VGA_B => vga_blue(7 downto 2),
 		AUDIO_L => sigma_l,
-		AUDIO_R => sigma_r
---		DAC_L   => dac_l,
---		DAC_R   => dac_r
+		AUDIO_R => sigma_r,
+		DAC_L   => dac_l,
+		DAC_R   => dac_r
 --		PS2K_CLK => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
 --		PS2K_DAT => ps2_keyboard_dat_in,
 --		PS2M_CLK => ps2_mouse_clk_in,

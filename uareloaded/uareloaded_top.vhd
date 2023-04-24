@@ -116,10 +116,10 @@ architecture RTL of uareloaded_top is
 	signal joyd : std_logic_vector(7 downto 0);
 	
 	-- DAC AUDIO
-    	signal dac_l: signed(15 downto 0);
-    	signal dac_r: signed(15 downto 0);
-    	--signal dac_l_s: signed(15 downto 0);
-    	--signal dac_r_s: signed(15 downto 0);
+	signal dac_l : std_logic_vector(15 downto 0);
+	signal dac_r : std_logic_vector(15 downto 0);
+	signal dac_l_s: std_logic_vector(15 downto 0);
+	signal dac_r_s: std_logic_vector(15 downto 0);
 	
 	-- DAC VGA
 	signal vga_clk_o    :  std_logic;
@@ -193,13 +193,14 @@ begin
 		  dac_SCLK  => SCLK,
 		  dac_SDIN  => SDIN,
 		  dac_LRCK  => LRCLK,
-		  L_data    => std_logic_vector (dac_l),
-		  R_data    => std_logic_vector (dac_r)
+		--	L_data    => std_logic_vector(dac_l),
+		--	R_data    => std_logic_vector(dac_r)
+		L_data    => dac_l_s,
+		R_data    => dac_r_s
 	);
 
-	--dac_l_s <= (dac_l & dac_l(9 downto 4));
-	--dac_r_s <= (dac_r & dac_r(9 downto 4));
-
+	dac_l_s <= '0' & dac_l(14 downto 0);
+	dac_r_s <= '0' & dac_r(14 downto 0);
 
 
 	guest: COMPONENT archimedes_mist_top
@@ -237,9 +238,10 @@ begin
 		VGA_G => vga_green(7 downto 2),
 		VGA_B => vga_blue(7 downto 2),
 		AUDIO_L => sigma_l,
-		AUDIO_R => sigma_r
---		DAC_L   => dac_l,
---		DAC_R   => dac_r
+		AUDIO_R => sigma_r,
+		DAC_L   => dac_l,
+		DAC_R   => dac_r
+		
 --		PS2K_CLK => ps2_keyboard_clk_in or intercept, -- Block keyboard when OSD is active
 --		PS2K_DAT => ps2_keyboard_dat_in,
 --		PS2M_CLK => ps2_mouse_clk_in,
