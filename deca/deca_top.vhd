@@ -167,10 +167,10 @@ architecture RTL of deca_top is
 	signal joyd : std_logic_vector(7 downto 0);
 
 	-- DAC AUDIO     
-	signal dac_l : std_logic_vector(15 downto 0);
-	signal dac_r : std_logic_vector(15 downto 0);
-	signal dac_l_s: std_logic_vector(15 downto 0);
-	signal dac_r_s: std_logic_vector(15 downto 0);
+	signal dac_l : signed(15 downto 0);
+	signal dac_r : signed(15 downto 0);
+	signal dac_l_s: signed(15 downto 0);
+	signal dac_r_s: signed(15 downto 0);
 
 	component AUDIO_SPI_CTL_RD
 		port (
@@ -379,14 +379,20 @@ begin
 			dac_LRCK  => i2s_Lr_o,
 			dac_SCLK  => i2s_Sck_o,
 			dac_SDIN  => i2s_D_o,
-		--	L_data    => std_logic_vector(dac_l),
-		--	R_data    => std_logic_vector(dac_r)
-			L_data    => dac_l_s,
-			R_data    => dac_r_s
+			L_data    => std_logic_vector(dac_l_s),
+			R_data    => std_logic_vector(dac_r_s)
+		--	L_data    => dac_l_s,
+		--	R_data    => dac_r_s
 		);
 
-	dac_l_s <= '0' & dac_l(14 downto 0);
-	dac_r_s <= '0' & dac_r(14 downto 0);
+	--6	dac_l_s <= "000" & dac_l(15 downto 3); STD_LOGIC_VECTOR fatal riscdreams, pero populous bastante bien
+	--5	dac_l_s <= "000" & dac_l(15 downto 3); SIGNED			fatal riscdreams, pero populous muy bien
+	--4 (not dac_l(15)) & dac_l(14 downto 0); SIGNED	 		fatal riscdreams, pero populous bastante bien
+	--3 (not dac_l(15)) & dac_l(14 downto 0); STD_LOGIC_VECTOR 	fatal riscdreams
+	--2 "00" & dac_l(14 downto 1); STD_LOGIC_VECTOR      		muy mal riscdreams
+	--1 "00" & dac_l(15 downto 2); STD_LOGIC_VECTOR				saturado riscdreams  cmos ram
+	dac_l_s <= "000" & dac_l(15 downto 3);
+	dac_r_s <= "000" & dac_r(15 downto 3);
 
 
 	I2S_MCK <= i2s_Mck_o;

@@ -62,10 +62,10 @@ component archimedes_mist_top
 		VGA_B		:	 OUT STD_LOGIC_VECTOR(5 DOWNTO 0);
 --		UART_TX	:	OUT STD_LOGIC;
 --		UART_RX	:	IN STD_LOGIC := '1';
-		AUDIO_L  	: out std_logic;
-		AUDIO_R  	: out std_logic;
-		DAC_L       : out STD_LOGIC_VECTOR(15 downto 0);
-		DAC_R       : out STD_LOGIC_VECTOR(15 downto 0)
+		AUDIO_L  	: out STD_LOGIC;
+		AUDIO_R  	: out STD_LOGIC;
+		DAC_L       : out SIGNED(15 downto 0);
+		DAC_R       : out SIGNED(15 downto 0)
 --		PS2K_CLK : in std_logic;
 --		PS2K_DAT : in std_logic;
 --		PS2M_CLK : in std_logic;
